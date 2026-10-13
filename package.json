@@ -1,0 +1,46 @@
+{
+  "name": "coldcompare",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "db:migrate": "tsx scripts/migrate.ts",
+    "db:seed": "tsx scripts/seed.ts",
+    "db:setup": "npm run db:migrate && npm run db:seed",
+    "admin:create": "tsx scripts/create-admin.ts"
+  },
+  "engines": {
+    "node": ">=22.6"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "5.3.0",
+    "marked": "15.0.12",
+    "next": "15.5.27",
+    "pg": "8.23.1",
+    "react": "19.1.9",
+    "react-dom": "19.1.9",
+    "server-only": "0.0.1",
+    "zod": "3.25.76"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1",
+    "@tailwindcss/postcss": "4.1.13",
+    "@types/node": "22.19.1",
+    "@types/pg": "8.15.6",
+    "@types/react": "19.1.12",
+    "@types/react-dom": "19.1.9",
+    "tailwindcss": "4.1.13",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3",
+    "vitest": "4.1.11"
+  },
+  "overrides": {
+    "postcss": "8.5.30"
+  }
+}
