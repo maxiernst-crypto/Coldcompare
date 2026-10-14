@@ -33,7 +33,7 @@ export default async function ComparePage({ params }: { params: Promise<{ locale
       <div className="mt-2">
         <AffiliateNote d={d} locale={locale} />
       </div>
-      <div className="mt-8">
+      <div className="mt-8" data-island="compare-engine">
         <Suspense>
           <CompareEngine products={list} />
         </Suspense>

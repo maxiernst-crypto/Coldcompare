@@ -33,6 +33,7 @@ npm run dev                         # http://localhost:3000  ·  admin: http://l
 | `npm run db:migrate` | Apply SQL migrations in `db/migrations` |
 | `npm run db:seed` | Idempotent seed; never overwrites admin edits. `-- --force` re-applies seed content. |
 | `npm run admin:create -- email "Name" role` | Create/reset a user (password from `ADMIN_PASSWORD`) |
+| `npm run demo:static` | Build a clickable static snapshot (no server needed) into `static-demo/` from a running preview build on :3000 |
 
 ## Project layout
 

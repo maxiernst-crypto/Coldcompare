@@ -26,7 +26,7 @@ export function NewsletterForm() {
   if (state === "ok") return <p role="status" className="text-sm font-medium text-ok">{d.newsletter.success}</p>;
 
   return (
-    <form onSubmit={onSubmit} className="min-w-0 space-y-2">
+    <form onSubmit={onSubmit} className="min-w-0 space-y-2" data-island="newsletter">
       <div className="flex gap-2">
         <label htmlFor="nl-email" className="sr-only">
           Email

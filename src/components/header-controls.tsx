@@ -100,3 +100,18 @@ export function MobileNav({ links }: { links: { href: string; label: string }[] 
     </div>
   );
 }
+
+/** Right-hand side of the site header (preferences, theme, quiz CTA, mobile menu). */
+export function HeaderControls({ links }: { links: { href: string; label: string }[] }) {
+  const { d, locale } = usePrefs();
+  return (
+    <div className="flex items-center gap-2" data-island="header-controls">
+      <PrefsSwitcher className="hidden lg:flex" />
+      <ThemeToggle />
+      <Link href={`/${locale}/quiz`} className="hidden rounded-lg bg-accent px-3.5 py-2 text-sm font-semibold text-[#0b0f14] hover:brightness-105 sm:inline-flex">
+        {d.nav.quiz}
+      </Link>
+      <MobileNav links={[...links, { href: `/${locale}/quiz`, label: d.nav.quiz }]} />
+    </div>
+  );
+}

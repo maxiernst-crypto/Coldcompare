@@ -134,7 +134,9 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
         <section className="border-y border-line bg-bg-subtle">
           <Container className="py-16">
             <SectionHeading title={d.home.comparePreviewTitle} sub={d.home.comparePreviewSub} />
-            <ComparePreview products={list.slice(0, 8)} />
+            <div data-island="compare-preview">
+              <ComparePreview products={list.slice(0, 8)} />
+            </div>
           </Container>
         </section>
       )}

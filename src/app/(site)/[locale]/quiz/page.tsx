@@ -22,7 +22,7 @@ export default async function QuizPage({ params }: { params: Promise<{ locale: L
       <Breadcrumbs d={d} items={[{ name: d.nav.home, href: `/${locale}` }, { name: d.nav.quiz, href: `/${locale}/quiz` }]} />
       <h1 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">{d.quiz.title}</h1>
       <p className="mt-3 text-fg-muted">{d.quiz.sub}</p>
-      <div className="mt-8">
+      <div className="mt-8" data-island="quiz">
         <Suspense>
           <Quiz products={list} />
         </Suspense>

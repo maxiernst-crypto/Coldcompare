@@ -25,7 +25,7 @@ export default async function WalletsPage({ params }: { params: Promise<{ locale
       <div className="mt-2">
         <AffiliateNote d={d} locale={locale} />
       </div>
-      <div className="mt-8">
+      <div className="mt-8" data-island="wallet-browser">
         <Suspense>
           <WalletBrowser products={list} />
         </Suspense>

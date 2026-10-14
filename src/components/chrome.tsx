@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Dictionary } from "@/lib/i18n/en";
 import type { Locale } from "@/lib/schemas";
 import { CookieSettingsButton } from "./consent";
-import { MobileNav, PrefsSwitcher, ThemeToggle } from "./header-controls";
+import { HeaderControls } from "./header-controls";
 import { NewsletterForm } from "./newsletter";
 import { Container, SeedWarning } from "./ui";
 
@@ -44,14 +44,7 @@ export function SiteHeader({ locale, d }: { locale: Locale; d: Dictionary }) {
             </Link>
           ))}
         </nav>
-        <div className="flex items-center gap-2">
-          <PrefsSwitcher className="hidden lg:flex" />
-          <ThemeToggle />
-          <Link href={`/${locale}/quiz`} className="hidden rounded-lg bg-accent px-3.5 py-2 text-sm font-semibold text-[#0b0f14] hover:brightness-105 sm:inline-flex">
-            {d.nav.quiz}
-          </Link>
-          <MobileNav links={[...links, { href: `/${locale}/quiz`, label: d.nav.quiz }]} />
-        </div>
+        <HeaderControls links={links} />
       </Container>
     </header>
   );
