@@ -1,5 +1,20 @@
 # Deployment (Vercel + Supabase)
 
+## Easiest path — no local tools needed
+
+1. **Supabase** (supabase.com → New project, region e.g. Frankfurt). Save the database password.
+2. In Supabase open **SQL Editor → New query**, paste the whole of [`db/supabase-setup.sql`](../db/supabase-setup.sql), click **Run**. This creates the schema and all initial wallets/articles.
+3. In Supabase click **Connect** and copy the **Transaction pooler** connection string (port 6543); replace `[YOUR-PASSWORD]`.
+4. **Vercel** (vercel.com → Add New → Project → import the GitHub repo). Before clicking Deploy, add Environment Variables:
+   `DATABASE_URL` (step 3), `AUTH_SECRET` (any long random string), `NEXT_PUBLIC_SITE_URL` (e.g. `https://coldcompare.vercel.app`, update after the first deploy if different), `CONTENT_PREVIEW` = `true` while content is unreviewed, `ADMIN_EMAIL`, `ADMIN_PASSWORD` (12+ characters), `CRON_SECRET` (random string).
+5. Deploy. Open the URL, then `/admin` and sign in with `ADMIN_EMAIL` / `ADMIN_PASSWORD` — the first sign-in creates the admin account (only while no users exist).
+
+With `CONTENT_PREVIEW=true` the site shows all reviewed-pending content with a preview banner and tells search engines not to index it. Switch it to `false` (and redeploy) when you go public; then only published content is shown.
+
+Regenerate `db/supabase-setup.sql` after changing seed content: `npm run db:setup` locally, then `scripts/export-supabase-sql.sh`.
+
+## Developer path
+
 1. **Database.** Create a Supabase project (EU region recommended for GDPR — e.g. Frankfurt). Copy the connection strings (Project Settings → Database). Use the **pooled (transaction) URL** for `DATABASE_URL` on Vercel.
 2. **Migrate & seed** from your machine:
    ```bash

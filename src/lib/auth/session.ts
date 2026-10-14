@@ -4,7 +4,8 @@ import { redirect } from "next/navigation";
 import { cache } from "react";
 import { query, queryOne } from "../db";
 import type { Role } from "../schemas";
-import { hashPassword, signSession, verifyPassword, verifySession } from "./crypto";
+import { timingSafeEqual } from "node:crypto";
+import { hashPassword, passwordProblem, signSession, verifyPassword, verifySession } from "./crypto";
 import { can, type Permission } from "./permissions";
 
 export const SESSION_COOKIE = "cc_admin";
@@ -60,9 +61,32 @@ function noteFailure(key: string, now = Date.now()) {
 
 let dummyHash: Promise<string> | null = null;
 
+/**
+ * First-run bootstrap: while the users table is empty, signing in with ADMIN_EMAIL / ADMIN_PASSWORD
+ * (server environment variables) creates that admin. Lets hosted setups skip the CLI seed step.
+ */
+async function bootstrapFirstAdmin(email: string, password: string): Promise<void> {
+  const envEmail = process.env.ADMIN_EMAIL?.toLowerCase().trim();
+  const envPassword = process.env.ADMIN_PASSWORD;
+  if (!envEmail || !envPassword || passwordProblem(envPassword)) return;
+  if (email !== envEmail || !safeEqual(password, envPassword)) return;
+  await query(
+    `INSERT INTO users (email, name, role, password_hash)
+     SELECT $1, 'Administrator', 'admin', $2 WHERE NOT EXISTS (SELECT 1 FROM users)`,
+    [envEmail, await hashPassword(envPassword)],
+  );
+}
+
+function safeEqual(a: string, b: string): boolean {
+  const x = Buffer.from(a);
+  const y = Buffer.from(b);
+  return x.length === y.length && timingSafeEqual(x, y);
+}
+
 export async function login(email: string, password: string): Promise<"ok" | "invalid" | "throttled"> {
   const key = email.toLowerCase().trim();
   if (loginThrottled(key)) return "throttled";
+  await bootstrapFirstAdmin(key, password);
   const u = await queryOne<{ id: string; password_hash: string; session_version: number; disabled: boolean }>(
     `SELECT id, password_hash, session_version, disabled FROM users WHERE lower(email) = $1`,
     [key],
